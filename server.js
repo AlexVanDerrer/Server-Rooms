@@ -1,18 +1,18 @@
-const WebSocket = require('ws');
-const server = new WebSocket.Server({ port: 3000})
 
-server.on('connection', ws => {
-    console.log('Server Start');
-    ws.on('message', message => {
-        if(message === '/kill'){
-            ws.close();
-        } else {
-            server.clients.forEach(client => {
-                if(client.readyState === WebSocket.OPEN){
-                    client.send(message);
-                }
-            });
-        }
+const consola = require('consola')
+const { app, server}  = require('./src/index')
+
+const port = 3000;
+
+function start(){
+
+    server.listen(port, () => {
+        consola.ready({
+            message: `Server listening port: ${port} `,
+            badge: true
+        })
     })
-    ws.send('Welcom to Old School Chat! :) <br> > to kill connect enter > /kill <br> * * * * * * * * * * * * * * * *');
-})
+
+}
+
+start();
