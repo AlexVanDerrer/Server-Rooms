@@ -5,7 +5,7 @@ const users = require('./users')()
 
 const m = (name, text, id, type, avatar) => ({name, text, id, type, avatar})
 
-const adminAvatar = 'https://purepng.com/public/uploads/medium/purepng.com-anonymous-maskanonymous-maskfawkesgunpowder-plored-cheeksguy-fawkes-mask-1421526668310teu48.png'
+const adminAvatar = 'anonymous'
 
 
 io.on('connection', socket => {
@@ -24,14 +24,14 @@ io.on('connection', socket => {
         })
 
         cb({userId: socket.id});
-        io.to(dataUserFront.room).emit('updateUsers', users.getByRoom(dataUserFront.room))
+        io.to(dataUserFront.room).emit('updateUsersList', users.getByRoom(dataUserFront.room))
         setTimeout(()=> {
-            socket.emit('newMessage', m('AdminBot', `<b>${dataUserFront.name}</b>, welcome to room: ${dataUserFront.room}`, socket.id, 'received', adminAvatar));
+            socket.emit('newMessage', m('AdminBot', `${dataUserFront.name}, welcome to room: ${dataUserFront.room}`, socket.id, 'received', adminAvatar));
         },1000)
         
         socket.broadcast
             .to(dataUserFront.room)
-            .emit('newMessage', m('AdminBot', `<span style="color: red">${dataUserFront.name}</sapn> in room `, socket.id, 'received', adminAvatar))
+            .emit('newMessage', m('AdminBot', `${dataUserFront.name} in room `, socket.id, 'received', adminAvatar))
     })
 
     socket.on('createMessage', (data, cb) => {
@@ -49,7 +49,7 @@ io.on('connection', socket => {
     socket.on('userlogout', (id, cb) => {
         const user = users.remove(id)
         if (user) {
-            io.to(user.room).emit('updateUsers', users.getByRoom(user.room))
+            io.to(user.room).emit('updateUsersList', users.getByRoom(user.room))
             io.to(user.room).emit('newMessage', m('AdminBot', `${user.name} logged out`, user.id, 'received', adminAvatar))
         }
         cb()
@@ -58,7 +58,7 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         const user = users.remove(socket.id)
         if (user) {
-            io.to(user.room).emit('updateUsers', users.getByRoom(user.room))
+            io.to(user.room).emit('updateUsersList', users.getByRoom(user.room))
             io.to(user.room).emit('newMessage', m('AdminBot', `${user.name} logged out`, socket.id, 'received', adminAvatar))
         }
     })
