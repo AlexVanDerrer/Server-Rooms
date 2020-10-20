@@ -5,7 +5,7 @@ const users = require('./users')()
 
 const m = (name, text, id, type, avatar) => ({name, text, id, type, avatar})
 
-const adminAvatar = 'anonymous'
+const adminAvatar = 'https://purepng.com/public/uploads/medium/purepng.com-anonymous-maskanonymous-maskfawkesgunpowder-plored-cheeksguy-fawkes-mask-1421526668310teu48.png'
 
 
 io.on('connection', socket => {
