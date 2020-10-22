@@ -13,14 +13,16 @@ io.on('connection', socket => {
         if(!dataUserFront.name || !dataUserFront.room){
             return cb('fail data')
         }
+        const countUserInRoomNow = users.getByRoom(dataUserFront.room).length;
 
         socket.join(dataUserFront.room);
         users.remove(socket.id)
+
         users.add({
             id: socket.id,
             name: dataUserFront.name,
-            room: dataUserFront.room
-
+            room: dataUserFront.room,
+            isAdmin: countUserInRoomNow > 0? false : true
         })
 
         cb({userId: socket.id});
