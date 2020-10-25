@@ -1,11 +1,15 @@
+const { Interface } = require('readline');
+
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const users = require('./users')()
+const users = require('./users')();
+const crypto = require('./crypto')();
 
-const m = (name, text, id, type, avatar) => ({name, text, id, type, avatar})
+const m = (name, text, id, type, avatar) => ({name, text: crypto.encryptData(text), id, type, avatar})
 
 const adminAvatar = 'https://purepng.com/public/uploads/medium/purepng.com-anonymous-maskanonymous-maskfawkesgunpowder-plored-cheeksguy-fawkes-mask-1421526668310teu48.png'
+
 
 
 io.on('connection', socket => {
