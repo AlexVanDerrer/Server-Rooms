@@ -1,20 +1,18 @@
+const cryptoJS = require('crypto-js');
+
 class Crypto {
     constructor(){
-        this.crypto = require('crypto');
-        this.iv = this.crypto.randomBytes(16);  //генерация вектора инициализации
-        this.key = this.crypto.scryptSync('secret', 'salt', 32); //генерация ключа
+        this.key = cryptoJS.MD5('rooms-security').toString();
     }
 
     /**
      * 
-     * @param {string} data 
+     * @param {string | object} data 
      */
     encryptData(data){
-        const cipher = this.crypto.createCipheriv('aes-256-cbc', this.key, this.iv);
-        let encryptedData = cipher.update(data, 'utf8', 'hex');
-        encryptedData += cipher.final('hex');
+        const cipher = cryptoJS.AES.encrypt(data, this.key).toString();
+        return cipher;
 
-        return encryptedData;
     }
     
     /**
@@ -22,11 +20,9 @@ class Crypto {
      * @param {string} data 
      */
     decryptData(data){
-        const decipher = this.crypto.createDecipheriv('aes-256-cbc', this.key, this.iv);
-        let decryptedData = decipher.update(data, 'hex', 'utf8');
-        decryptedData += decipher.final('utf8');
-
-        return decryptedData;
+        const decipher = cryptoJS.AES.decrypt(data, this.key).toString();
+        let originalText = decipher.toString(cryptoJS.enc.Utf8);
+        return originalText;
     }
 }
 
