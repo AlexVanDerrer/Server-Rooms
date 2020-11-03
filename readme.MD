@@ -1,4 +1,4 @@
-# Introduction to Docker by Denis Astahov
+# Introduction to Docker
 
 
 ## Install Docker on Ubuntu 18.04
@@ -15,7 +15,7 @@ sudo usermod -aG docker $USER
 ```
 
 ## docker run hello-world
-
+```
 docker ps
 docker ps -a
 docker images
@@ -42,28 +42,33 @@ docker tag denis_ubuntu denis_ubuntu-PROD:v2
 
 docker rm   # delete container
 docker rmi  # delete image
+```
 
 ## UPDATE IMAGE
+```
 docker run -d -p 7777:80 denis_ubuntu4
 docker exec -it 5267e21d140 /bin/bash
 echo "V2" >> /var/www/html/index.html
 exit
 docker commit 5267e21d140 denis_v2:latest
+```
 
 ## Export/Import Docker Image to file
+```
 docker save image:tag > arch_name.tar
 docker load -i arch_name.tar
+```
 
 
 ## Import/Export Docker Image to AWS ECR
+```
 docker build -t denis:v1 .
 aws ecr get-login --no-include-email --region=ca-central-1 
 docker tag  denis:v1  12345678.dkr.ecr.ca-central-1.amazonaws.com/myrepo:latest
 docker push 12345678.dkr.ecr.ca-central-1.amazonaws.com/myrepo:lastest
 
 docker pull 12345678.dkr.ecr.ca-central-1.amazonaws.com/myrepo:latest
-
-
+```
 
 ## Kill and Delete Containers and Images
 docker rm -f $(docker ps -aq)        # Delete all Containers
