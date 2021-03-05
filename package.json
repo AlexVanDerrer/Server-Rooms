@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server-max": "pm2 start server.js -i max",
-    "server": "pm2 start server.js",
+    "server": "pm2 start",
     "stop-all": "pm2 stop all",
     "delete-all": "pm2 delete all"
   },
